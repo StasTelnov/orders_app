@@ -1,0 +1,7 @@
+.idea/
+__pycache__/
+.python-version
+orders_app.sublime-project
+orders_app.sublime-workspace
+static/bower_components/
+.bowerrc

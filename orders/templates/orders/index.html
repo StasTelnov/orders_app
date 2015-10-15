@@ -1,0 +1,40 @@
+{% extends "orders/layout.html" %}
+{% load djmoney %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+    {% if order_list %}
+        <table class="table table-striped">
+          <thead>
+            <tr>
+                <th class="col-md-1">#</th>
+                <th class="col-md-1">Title</th>
+                <th class="col-md-5">Description</th>
+                <th class="col-md-1">Price</th>
+                <th class="col-md-1">Customer</th>
+                <th class="col-md-2">Published at</th>
+                <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in order_list %}
+                <tr>
+                    <th scope="row">{{ order.id }}</th>
+                    <td>{{ order.title }}</td>
+                    <td>{{ order.description }}</td>
+                    <td>{% money_localize order.price order.price_currency %}</td>
+                    <td>{{ user.get_full_name|default:"Mr. Nobody" }}</td>
+                    <td>{{ order.created_at|date:"d b, Y" }}</td>
+                    <td>
+                        <a href="{% url 'orders:execute' order.id %}" class="btn btn-sm btn-success">Make</a>
+                    </td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+            {% include 'shared/pagination.html' with list=order_list %}
+    {% else %}
+        <p>No orders are available.</p>
+    {% endif %}
+{% endblock %}

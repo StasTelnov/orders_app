@@ -1,0 +1,30 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'welcome' %}">Project name</a>
+        </div>
+        {% block navbar %}
+            <div id="navbar" class="collapse navbar-collapse">
+                {% if user.is_authenticated %}
+                    <ul class="nav navbar-nav">
+                        <li><a href="{% url 'orders:index' %}">Orders</a></li>
+                    </ul>
+                    <div class="navbar-form navbar-right">
+                        <a class="btn btn-success" href="{% url 'accounts:logout' %}">Sign out</a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a>Welcome, {{ user.get_full_name|default:"Mr. Nobody" }}!</a></li>
+                    </ul>
+                {% else %}
+                    {% include 'partials/login_form.html' %}
+                {% endif %}
+            </div><!--/.nav-collapse -->
+        {% endblock %}
+    </div>
+</nav>
