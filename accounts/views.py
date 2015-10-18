@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.models import Group
+from stronghold.decorators import public
+from .forms import CustomUserCreationForm
 
 
+@public
 def welcome(request):
     if 'next' in request.GET:
         if not request.user.is_authenticated():
@@ -14,6 +16,7 @@ def welcome(request):
     return render(request, 'accounts/welcome.html')
 
 
+@public
 def sign_in(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -37,13 +40,12 @@ def sing_out(request):
     return redirect('welcome')
 
 
+@public
 def sign_up(request):
     if request.method == 'POST':
-        form = CustomUserForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user_group = Group.objects.get(name='user')
-            user_group.user_set.add(user)
             username = request.POST['username']
             password = request.POST['password1']
             user = authenticate(username=username, password=password)
@@ -55,5 +57,5 @@ def sign_up(request):
                                                                         yet.")
             return redirect('welcome')
     else:
-        form = CustomUserForm()
+        form = CustomUserCreationForm()
     return render(request, 'accounts/sign_up.html', {'form': form})

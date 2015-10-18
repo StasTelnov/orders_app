@@ -4,7 +4,7 @@ from .models import Order
 
 
 class OrderAdmin(admin.ModelAdmin):
-    exclude = ('customer', 'executor',)
+    # readonly_fields = ('customer', 'executor',)
 
     def save_model(self, request, obj, form, change):
         obj.customer = request.user

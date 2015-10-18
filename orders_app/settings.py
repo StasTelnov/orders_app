@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from decimal import Decimal
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,9 +38,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'stronghold',
+    'bootstrap_pagination',
+    'bootstrapform',
     'djmoney',
     'accounts',
     'orders',
+    'libs',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,7 +56,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'accounts.auth_required_middleware.AuthRequiredMiddleware',
+    'stronghold.middleware.LoginRequiredMiddleware',
 )
 
 ROOT_URLCONF = 'orders_app.urls'
@@ -121,6 +126,14 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 CURRENCIES = ('USD',)
+
+SYSTEM_FEE = Decimal('0.015')
+
+STRONGHOLD_DEFAULTS = True
+
+STRONGHOLD_PUBLIC_URLS = (
+    r'^/admin.*?$',
+)
 
 LOGGING = {
     'version': 1,

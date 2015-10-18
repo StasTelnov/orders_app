@@ -1,10 +1,11 @@
 {% extends "orders/layout.html" %}
-{% load djmoney %}
+{% load bootstrap_pagination %}
 
 {% block title %}Orders{% endblock %}
 
 {% block content %}
     {% if order_list %}
+        {% bootstrap_paginate page_obj range=5%}
         <table class="table table-striped">
           <thead>
             <tr>
@@ -23,8 +24,8 @@
                     <th scope="row">{{ order.id }}</th>
                     <td>{{ order.title }}</td>
                     <td>{{ order.description }}</td>
-                    <td>{% money_localize order.price order.price_currency %}</td>
-                    <td>{{ user.get_full_name|default:"Mr. Nobody" }}</td>
+                    <td>{{ order.price }}</td>
+                    <td>{{ order.customer.get_full_name|default:"Mr. Nobody" }}</td>
                     <td>{{ order.created_at|date:"d b, Y" }}</td>
                     <td>
                         <a href="{% url 'orders:execute' order.id %}" class="btn btn-sm btn-success">Make</a>
@@ -33,8 +34,7 @@
             {% endfor %}
           </tbody>
         </table>
-            {% include 'shared/pagination.html' with list=order_list %}
     {% else %}
-        <p>No orders are available.</p>
+        <h3>No orders are available</h3>
     {% endif %}
 {% endblock %}
